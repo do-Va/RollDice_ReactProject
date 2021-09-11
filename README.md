@@ -1,68 +1,67 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# **`React State Exercises`**
 
-## Available Scripts
+This exercise practices working with props, defaultProps, state, and simple click events in React.
 
-In the project directory, you can run:
+Make a new React project with **`create-react-app`**.
 
-### `npm start`
+## **`Roll Dice`**
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Let’s build an app that lets us roll a pair of dice. Here’s a gif for some inspiration (this is the solution code running):
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+![](_images/roll_dice.gif)
 
-### `npm test`
+### **`Step 1: Component Structure`**
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Make two components:
 
-### `npm run build`
+- RollDice - a parent component (rendered by App) that renders the dice and a button to roll.
+- Die - an individual die that takes props and displays the correct face of the die based on props.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### **`Step 2: Making Dice`**
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+How are we going to render dice?
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+We could get six different image files, but there is a better way!
 
-### `npm run eject`
+Font Awesome has handy dice classes for us: https://fontawesome.com/icons/dice-one?style=solid
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+`<i class="fas fa-dice-one"></i>`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+`fas fa-dice-one` through `fas fa-dice-six` represent dice with different faces, 1-6.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+To install font awesome for your React application, go into `public/index.html` and in the `<head>` tag, insert the **font-awesome CDN**.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+This gives you access to any FA classes in the JSX.
 
-## Learn More
+Your `Die.js` component would just be an icon that dynamically changes its class to the proper die face based on props from the parent component’s state.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### **`Step 3: Rolling Dice`**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The `RollDice` component should have:
 
-### Code Splitting
+- the state for both of the dice
+- a `roll()` method that rolls them to randomly get a new result
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+You can use `defaultProps` to set an array of six possible faces for each die.
 
-### Analyzing the Bundle Size
+Your `roll` method can pick a random element from the array for each die, then update the state, causing the dice to re-render to the appropriate values.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+Remember that these values will have to be translated into `fas fa-dice-one` through `fas fa-dice-six` for the child component to receive the appropriate class name through its props.
 
-### Making a Progressive Web App
+Do you have to store each class name in the array or can you programmatically decide which one the `Die` components should have?
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+## **`Further Study`**
 
-### Advanced Configuration
+### **`Animation`**
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+The solution displays an animation every time the dice are rolled.
 
-### Deployment
+A new piece of state is necessary to say whether the dice are currently rolling or not.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+This is done by appending a class containing a CSS animation, and then removing it after one second (hint: `setTimeout` with `setState`, but be careful what `this` references!).
 
-### `npm run build` fails to minify
+### **`Changing Button Text`**
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+The button can also dynamically change its text and become disabled (un-clickable) until the animation has completed.
+
+It relies on the additional piece of state that says whether the dice are currently rolling or not.
